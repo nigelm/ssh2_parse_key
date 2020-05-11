@@ -42,7 +42,7 @@ class Ssh2Key(StrictClass):
             headers["Comment"] = matches.group("comment")
         else:
             raise ValueError("Unrecognised type of ssh key")
-        return cls(key=key, type=type, encryption=encryption, headers=headers)
+        return [cls(key=key, type=type, encryption=encryption, headers=headers)]
 
     @classmethod
     def parse_file(cls, filepath):

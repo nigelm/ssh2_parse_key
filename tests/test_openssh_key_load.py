@@ -16,7 +16,7 @@ openssh_pubkey_tests = [
 def test_openssh_public_key_load(shared_datadir, format, encryption, comment):
     filename = f"test_key_{format}.pub"
     contents = (shared_datadir / filename).read_text()
-    pubkey = Ssh2Key.parse(contents)
+    pubkey = Ssh2Key.parse(contents)[0]
     assert pubkey.encryption == encryption
     assert pubkey.type == "public"
     assert pubkey.comment() == comment
@@ -26,7 +26,7 @@ def test_openssh_public_key_load(shared_datadir, format, encryption, comment):
 @pytest.mark.parametrize("format,encryption,comment", openssh_pubkey_tests)
 def test_openssh_public_key_file(shared_datadir, format, encryption, comment):
     filename = f"test_key_{format}.pub"
-    pubkey = Ssh2Key.parse_file(shared_datadir / filename)
+    pubkey = Ssh2Key.parse_file(shared_datadir / filename)[0]
     assert pubkey.encryption == encryption
     assert pubkey.type == "public"
     assert pubkey.comment() == comment
@@ -39,8 +39,8 @@ def test_openssh_public_key_compare_load_file(
 ):
     filename = f"test_key_{format}.pub"
     contents = (shared_datadir / filename).read_text()
-    pubkey = Ssh2Key.parse(contents)
-    fpubkey = Ssh2Key.parse_file(shared_datadir / filename)
+    pubkey = Ssh2Key.parse(contents)[0]
+    fpubkey = Ssh2Key.parse_file(shared_datadir / filename)[0]
     assert pubkey.to_dict() == fpubkey.to_dict()
 
 
