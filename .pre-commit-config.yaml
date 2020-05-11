@@ -50,5 +50,12 @@ repos:
     rev: v0.761
     hooks:
     -   id: mypy
-
+-   repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: master  # or specific git tag
+    hooks:
+        - id: check-mailmap
+        - id: markdownlint # Configure in .mdlrc
+        - id: script-must-have-extension
+        - id: script-must-not-have-extension
+        - id: shfmt
 # end

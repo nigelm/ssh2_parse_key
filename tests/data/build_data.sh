@@ -9,7 +9,7 @@
 #
 for keytype in dsa ecdsa ed25519 rsa; do
     ssh-keygen -f test_key_${keytype} -N '' -t ${keytype} -C "Test ssh key in ${keytype} format"
-    ssh-keygen -e -f test_key_${keytype} -m RFC4716 >test_key_${keytype}_rfc4716
+    ##  ssh-keygen -e -f test_key_${keytype} -m RFC4716 >test_key_${keytype}_rfc4716
     ssh-keygen -e -f test_key_${keytype}.pub -m RFC4716 >test_key_${keytype}_rfc4716.pub
 done
 
