@@ -109,7 +109,7 @@ class Ssh2Key(StrictClass):
                     continue
 
                 # check for OpenSSH format -- all on one line
-                matches = OPENSSH_PUBKEY_PATTERN.match(data)
+                matches = OPENSSH_PUBKEY_PATTERN.match(line)
                 if matches:
                     keys.append(cls._parse_openssh_oneline(matches))
 
@@ -124,10 +124,9 @@ class Ssh2Key(StrictClass):
     def _parse_openssh_oneline(cls, matches):
         """Build a openssh public key from regex match components."""
         key = matches.group("key")
-        type = "public"
         encryption = matches.group("encryption")
         headers = OrderedDict([("Comment", matches.group("comment"))])
-        return cls(key=key, type=type, encryption=encryption, headers=headers)
+        return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod
     def _parse_openssh(cls, keyblock, keytype, pubpriv):
