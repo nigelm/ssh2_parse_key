@@ -13,6 +13,7 @@ requirements = ["classforge"]
 
 setup_requirements = [
     "pytest-runner",
+    "wheel",
 ]
 
 test_requirements = [

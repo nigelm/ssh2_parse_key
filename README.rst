@@ -16,7 +16,10 @@ SSH2 Key Parsing
 
 
 
-Parses ssh2 keys and converts to multiple formats.
+Parses ssh2 public keys in either openssh or RFC4716/Secsh formats and
+converts to either format.
+
+At this point any attempt to work with private keys will raise an exception.
 
 
 * Free software: MIT license
@@ -26,7 +29,14 @@ Parses ssh2 keys and converts to multiple formats.
 Features
 --------
 
-* TODO
+* Reads public keys of the following encryption types:-
+    - ssh-rsa
+    - ssh-dss
+    - ecdsa-sha2-nistp256
+    - ssh-ed25519
+* Reads either Openssh or RFC4716 format public keys
+* Can read input sets with either or both formats in
+* Can output either format for any key
 
 Credits
 -------
