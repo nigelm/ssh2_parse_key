@@ -43,6 +43,7 @@ def test_rfc4716_public_key_load(shared_datadir, format, encryption, comment):
     #
     # check the key round trips OK (will break if any additional crap in file)
     assert contents == pubkey.secsh()
+    assert contents == pubkey.rfc4716()
 
 
 @pytest.mark.parametrize("format,encryption,comment", rfc4716_pubkey_tests)

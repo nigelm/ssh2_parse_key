@@ -241,6 +241,10 @@ class Ssh2Key(StrictClass):
         # return the assembled string
         return "\n".join(lines)
 
+    def rfc4716(self):
+        """Alias - rfc4716() is same as secsh()"""
+        return self.secsh()
+
     def openssh(self):
         """
         Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
