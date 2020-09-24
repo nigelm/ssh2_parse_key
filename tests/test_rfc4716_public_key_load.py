@@ -9,22 +9,22 @@ rfc4716_pubkey_tests = [
     (
         "dsa",
         "ssh-dss",
-        '"1024-bit DSA, converted by nigel@Weatherwax.home.private fro"',
+        '"1024-bit DSA, converted by someone@keytests.example.org fro"',
     ),
     (
         "ecdsa",
         "ecdsa-sha2-nistp256",
-        '"256-bit ECDSA, converted by nigel@Weatherwax.home.private fr"',
+        '"256-bit ECDSA, converted by someone@keytests.example.org fr"',
     ),
     (
         "ed25519",
         "ssh-ed25519",
-        '"256-bit ED25519, converted by nigel@Weatherwax.home.private "',
+        '"256-bit ED25519, converted by someone@keytests.example.org "',
     ),
     (
         "rsa",
         "ssh-rsa",
-        '"3072-bit RSA, converted by nigel@Weatherwax.home.private fro"',
+        '"3072-bit RSA, converted by someone@keytests.example.org fro"',
     ),
 ]
 
