@@ -29,4 +29,3 @@ To use SSH2 Key Parsing in a project::
 
         print("OpenSSH representation")
         print(key.openssh)
-
