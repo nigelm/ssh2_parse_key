@@ -3,6 +3,6 @@ from .ssh2_parse_key import Ssh2Key as _Ssh2Key
 
 Ssh2Key = _Ssh2Key
 
-__author__ = """Nigel Metheringham"""
+__author__ = "Nigel Metheringham"
 __email__ = "nigelm@cpan.org"
-__version__ = "__version__ = '0.2.2'"
+__version__ = "0.2.2"
