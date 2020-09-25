@@ -1,5 +1,5 @@
 Welcome to SSH2 Key Parsing's documentation!
-======================================
+============================================
 
 .. toctree::
    :maxdepth: 2
