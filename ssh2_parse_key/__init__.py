@@ -5,4 +5,4 @@ Ssh2Key = _Ssh2Key
 
 __author__ = """Nigel Metheringham"""
 __email__ = "nigelm@cpan.org"
-__version__ = "__version__ = '0.2.0'"
+__version__ = "__version__ = '0.2.1'"
