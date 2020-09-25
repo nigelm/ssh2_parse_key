@@ -52,6 +52,19 @@ INT_LEN = 4
 
 
 class Ssh2Key(StrictClass):
+    """
+    Encapsulates an ssh public key
+
+    :param key: The ssh key itself
+    :param type: is this a public or private key
+    :param encryption: The encryption type of the key
+    :param headers: Any headers for the key - eg Comment
+    :type key: string
+    :type type: one of ["public", "private"]
+    :type encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
+    :type headers: description
+    """
+
     key = Field(type=str, required=True)
     type = Field(type=str, choices=SSH2_KEY_TYPES, default="public")
     encryption = Field(type=str, choices=SSH2_KEY_ENCRYPTIONS, default="ssh-rsa")
@@ -275,10 +288,15 @@ class Ssh2Key(StrictClass):
         return "\n".join(lines)
 
     def comment(self):
-        return self.headers["Comment"]
+        """
+        Returns the comment header from a ssh key object.
+        """
+        if "Comment" in self.headers:
+            return self.headers["Comment"]
 
     def subject(self):
-        return self.headers["Subject"]
+        if "Subject" in self.headers:
+            return self.headers["Subject"]
 
     def _encode_header(self, data, header, value, limit):
         bits = textwrap.wrap(f"{header}: {value}", limit)
