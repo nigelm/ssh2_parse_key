@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-"""Tests for `ssh2_parse_key` package - convert keys."""
+"""
+Tests for `ssh2_parse_key` package - convert keys.
+
+Loads keys in one format, converts to the other, and
+check if they are the same as the test data (which was
+generated using the openssh tools).
+"""
 import pytest
 
 from ssh2_parse_key import Ssh2Key

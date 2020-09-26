@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Tests for `ssh2_parse_key` package - load private keys."""
+"""Tests for `ssh2_parse_key` package - load sets of keys."""
 import pytest  # noqa: F401
 
 from ssh2_parse_key import Ssh2Key
