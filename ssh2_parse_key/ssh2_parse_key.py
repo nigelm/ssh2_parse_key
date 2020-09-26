@@ -62,7 +62,7 @@ class Ssh2Key(StrictClass):
     :type key: string
     :type type: one of ["public", "private"]
     :type encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
-    :type headers: description
+    :type headers: OrderedDict
     """
 
     key = Field(type=str, required=True)
@@ -129,6 +129,9 @@ class Ssh2Key(StrictClass):
                 else:
                     # raise ValueError("Unrecognised type of ssh key")
                     pass  # ignore for now
+
+        if len(keys) == 0:
+            raise ValueError("No valid ssh keys found")
 
         # return the assemblage of keys
         return keys
