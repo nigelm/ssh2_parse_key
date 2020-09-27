@@ -39,22 +39,46 @@ Features
 * Can output either format for any key
 
 
-Status
-------
+Usage
+-----
 
-Still in initial stages, while I get used to some of the tooling, so
-some things like the documentation are not right (both content and
-some of the issues around how it is generated).  Currently not feeding
-to `readthedocs` despite what it says above...
+To use SSH2 Key Parsing in a project::
 
+    from ssh2_parse_key import Ssh2Key
+
+    # although you can create the object from internal data the normal method
+    # would be to use the parse() or parse_file() which return a list of Ssh2Key objects.
+    # Ssh2Key objects are immutable.
+    # Load one or more keys in either openssh or RFC4716 from a file
+    keys = Ssh2Key.parse_file("/path/to/public_key")
+
+    # alternatively
+    data = Path("/path/to/public_key").read_text()
+    keys = Ssh2Key.parse(data)
+
+    # now those keys can be dealt with...
+    for public_key in keys:
+        print(f"This is a {key.type} key")
+        print(f"It uses {key.encryption} encryption")
+        print(f"comment = {key.comment}")
+        print(f"subject = {key.subject}")
+
+        print("RFC4716 format representation")
+        print(key.rfc4716)
+
+        print("OpenSSH representation")
+        print(key.openssh)
 
 Credits
 -------
 
 The package is strongly based on the perl `Parse::SSH2::PublicKey`_ module.
 
+The class is built using Michael DeHaan's `ClassForge`_ object system.
+
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
-.. _`Parse::SSH2::PublicKey`: https://metacpan.org/pod/Parse::SSH2::PublicKey
+.. _Parse::SSH2::PublicKey: https://metacpan.org/pod/Parse::SSH2::PublicKey
+.. _ClassForge: https://classforge.io/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
