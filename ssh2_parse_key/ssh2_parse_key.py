@@ -55,33 +55,41 @@ class Ssh2Key(StrictClass):
     """
     Encapsulates an ssh public key
 
-    :param key: The ssh key itself
-    :param type: is this a public or private key
-    :param encryption: The encryption type of the key
-    :param headers: Any headers for the key - eg Comment
-    :type key: string
-    :type type: one of ["public", "private"]
-    :type encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
-    :type headers: OrderedDict
+    An Ssh2Key object is immutable after creation.  Typically you would create
+    Ssh2Key objects by using ``parse()`` or ``parse_file()`` class methods.
+
+    :ivar key: The ssh key itself
+    :vartype key: str
+    :ivar type: is this a public or private key
+    :vartype type: one of ["public", "private"]
+    :ivar encryption: The encryption type of the key
+    :vartype encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
+    :ivar headers: Any headers for the key - eg Comment
+    :vartype headers: OrderedDict
+
     """
 
-    key = Field(type=str, required=True)
-    type = Field(type=str, choices=SSH2_KEY_TYPES, default="public")
-    encryption = Field(type=str, choices=SSH2_KEY_ENCRYPTIONS, default="ssh-rsa")
-    headers = Field(type=OrderedDict, default={})
-
-    @classmethod
-    def parse_file(cls, filepath):
-        """Convenience method which opens a file and calls parse() on the contents."""
-        with open(filepath, "r") as f:
-            data = f.read()
-            return cls.parse(data)
+    #: This is a test attribute.
+    key = Field(type=str, required=True, mutable=False)
+    type = Field(type=str, choices=SSH2_KEY_TYPES, default="public", mutable=False)
+    encryption = Field(
+        type=str, choices=SSH2_KEY_ENCRYPTIONS, default="ssh-rsa", mutable=False,
+    )
+    headers = Field(type=OrderedDict, default={}, mutable=False)
 
     @classmethod
     def parse(cls, data):
         """
-        Accepts a block of text and parses out SSH2 public keys in both OpenSSH and SECSH format.
-        Class method to be used instead of new().
+        Creates a set of Ssh2Key objects from a string of ssh key data
+
+        Accepts a block of text containing SSH2 public keys (in either OpenSSH or
+        SECSH format) and parses out SSH2 public keys returning them as Ssh2Key
+        Objects.
+
+        :param data: A multiline string of ssh key data in OpenSSH or SECSH format
+        :type data: str
+        :rtype: list ``Ssh2Key`` objects
+        :raises: ValueError
         """
         lines = data.splitlines()  # break the input into lines
         keys = []  # the keys we have parsed
@@ -135,6 +143,24 @@ class Ssh2Key(StrictClass):
 
         # return the assemblage of keys
         return keys
+
+    @classmethod
+    def parse_file(cls, filepath):
+        """
+        Creates a set of Ssh2Key objects from a file of ssh key data
+
+        Accepts a block of text containing SSH2 public keys (in either OpenSSH or
+        SECSH format) and parses out SSH2 public keys returning them as Ssh2Key
+        Objects.
+
+        :param filepath: A pathname of a file containing ssh key data
+        :type filepath: str
+        :rtype: list ``Ssh2Key`` objects
+        :raises: ValueError
+        """
+        with open(filepath, "r") as f:
+            data = f.read()
+            return cls.parse(data)
 
     @classmethod
     def _parse_openssh_oneline(cls, matches):
@@ -230,6 +256,8 @@ class Ssh2Key(StrictClass):
         Preserves headers and the order of headers.
 
         See http://tools.ietf.org/html/rfc4716
+
+        :rtype: str
         """
         lines = []
         if self.type == "public":
@@ -257,13 +285,22 @@ class Ssh2Key(StrictClass):
         return "\n".join(lines)
 
     def rfc4716(self):
-        """Alias - rfc4716() is same as secsh()"""
+        """
+        Returns an SSH public key in SECSH format (as specified in RFC4716).
+        Preserves headers and the order of headers.  Alias - ``rfc4716()`` is same as ``secsh()``
+
+        See http://tools.ietf.org/html/rfc4716
+
+        :rtype: str
+        """
         return self.secsh()
 
     def openssh(self):
         """
         Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
         field parsed from either SECSH or OpenSSH.
+
+        :rtype: str
         """
         lines = []
         if self.type == "public":
@@ -293,11 +330,18 @@ class Ssh2Key(StrictClass):
     def comment(self):
         """
         Returns the comment header from a ssh key object.
+
+        :rtype: str
         """
         if "Comment" in self.headers:
             return self.headers["Comment"]
 
     def subject(self):
+        """
+        Returns the subject header from a ssh key object.
+
+        :rtype: str
+        """
         if "Subject" in self.headers:
             return self.headers["Subject"]
 

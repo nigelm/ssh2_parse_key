@@ -4,11 +4,10 @@ Usage
 
 To use SSH2 Key Parsing in a project::
 
-    import ssh2_parse_key
+    from ssh2_parse_key import Ssh2Key
 
-    # although you can create the object from internal data
-    # the normal method would be to use the parse() or parse_file()
-    # which return a list of Ssh2Key objects.
+    # although you can create the object from internal data the normal method
+    # would be to use the parse() or parse_file() which return a list of Ssh2Key objects.
     # Ssh2Key objects are immutable.
     # Load one or more keys in either openssh or RFC4716 from a file
     keys = Ssh2Key.parse_file("/path/to/public_key")
