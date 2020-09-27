@@ -39,22 +39,5 @@ Features
 * Can output either format for any key
 
 
-Status
-------
-
-Still in initial stages, while I get used to some of the tooling, so
-some things like the documentation are not right (both content and
-some of the issues around how it is generated).  Currently not feeding
-to `readthedocs` despite what it says above...
-
-
-Credits
--------
-
-The package is strongly based on the perl `Parse::SSH2::PublicKey`_ module.
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _`Parse::SSH2::PublicKey`: https://metacpan.org/pod/Parse::SSH2::PublicKey
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. include:: docs/usage.rst
+.. include:: AUTHORS.rst
