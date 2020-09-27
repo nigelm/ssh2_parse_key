@@ -34,7 +34,7 @@ import ssh2_parse_key  # noqa: E402
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
-    # "sphinx.ext.napoleon",
+    "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
 ]
 

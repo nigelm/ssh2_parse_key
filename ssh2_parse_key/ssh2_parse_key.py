@@ -1,4 +1,4 @@
-"""Main module."""
+"""Main module for ssh2_parse_key - provides Ssh2Key()"""
 import base64
 import re
 import struct
@@ -58,23 +58,27 @@ class Ssh2Key(StrictClass):
     An Ssh2Key object is immutable after creation.  Typically you would create
     Ssh2Key objects by using ``parse()`` or ``parse_file()`` class methods.
 
-    :ivar key: The ssh key itself
-    :vartype key: str
-    :ivar type: is this a public or private key
-    :vartype type: one of ["public", "private"]
-    :ivar encryption: The encryption type of the key
-    :vartype encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
-    :ivar headers: Any headers for the key - eg Comment
-    :vartype headers: OrderedDict
+    :param key: The ssh key itself
+    :type key: string
+    :param type: is this a public or private key
+    :type type: one of ["public", "private"]
+    :param encryption: The encryption type of the key
+    :type encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
+    :param headers: Any headers for the key - eg Comment
+    :type headers: OrderedDict
 
     """
 
-    #: This is a test attribute.
+    #: string - base64 encoded: The ssh key itself
     key = Field(type=str, required=True, mutable=False)
+    #: string - one of ["public", "private"]: is this a public or private key
     type = Field(type=str, choices=SSH2_KEY_TYPES, default="public", mutable=False)
+    #: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]: The encryption
+    #: type of the key
     encryption = Field(
         type=str, choices=SSH2_KEY_ENCRYPTIONS, default="ssh-rsa", mutable=False,
     )
+    #: OrderedDict: Any headers for the key - eg Comment
     headers = Field(type=OrderedDict, default={}, mutable=False)
 
     @classmethod
@@ -253,7 +257,8 @@ class Ssh2Key(StrictClass):
     def secsh(self):
         """
         Returns an SSH public key in SECSH format (as specified in RFC4716).
-        Preserves headers and the order of headers.
+        Preserves headers and the order of headers.  Returned as a single
+        string including newlines and with terminating newline.
 
         See http://tools.ietf.org/html/rfc4716
 
@@ -287,7 +292,10 @@ class Ssh2Key(StrictClass):
     def rfc4716(self):
         """
         Returns an SSH public key in SECSH format (as specified in RFC4716).
-        Preserves headers and the order of headers.  Alias - ``rfc4716()`` is same as ``secsh()``
+        Preserves headers and the order of headers.  Returned as a single
+        string including newlines and with terminating newline.
+
+        Alias - ``rfc4716()`` just calls ``secsh()``
 
         See http://tools.ietf.org/html/rfc4716
 
@@ -298,7 +306,8 @@ class Ssh2Key(StrictClass):
     def openssh(self):
         """
         Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
-        field parsed from either SECSH or OpenSSH.
+        field parsed from either SECSH or OpenSSH.  Returned as a single
+        string including newlines and with terminating newline.
 
         :rtype: str
         """
