@@ -14,3 +14,11 @@ History
 * First release
 * Documentation build
 * CI and release automation
+
+
+0.3.x (2020-09-27)
+------------------
+
+* Fixed up documentation
+* Added a few additional tests
+* This is now reasonably presentable
