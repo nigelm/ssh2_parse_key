@@ -42,7 +42,10 @@ def test_openssh_public_key_file(shared_datadir, format, encryption, comment):
 
 @pytest.mark.parametrize("format,encryption,comment", openssh_pubkey_tests)
 def test_openssh_public_key_compare_load_file(
-    shared_datadir, format, encryption, comment,
+    shared_datadir,
+    format,
+    encryption,
+    comment,
 ):
     filename = f"test_key_{format}.pub"
     contents = (shared_datadir / filename).read_text()
