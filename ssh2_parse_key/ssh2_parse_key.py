@@ -76,7 +76,10 @@ class Ssh2Key(StrictClass):
     #: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]: The encryption
     #: type of the key
     encryption = Field(
-        type=str, choices=SSH2_KEY_ENCRYPTIONS, default="ssh-rsa", mutable=False,
+        type=str,
+        choices=SSH2_KEY_ENCRYPTIONS,
+        default="ssh-rsa",
+        mutable=False,
     )
     #: OrderedDict: Any headers for the key - eg Comment
     headers = Field(type=OrderedDict, default={}, mutable=False)
@@ -103,36 +106,29 @@ class Ssh2Key(StrictClass):
         pubpriv = ""
 
         for line in lines:
-            if inside_keyblock:
-                matches = KEY_BOUNDARY_PATTERN.match(line)
-                if matches:
-                    if matches.group("beginend") == "END":
-                        inside_keyblock = False  # no longer within a keyblock
-                        if keytype == matches.group(
-                            "keytype",
-                        ) and pubpriv == matches.group("pubpriv"):
-                            if keytype in ["OPENSSH", "DSA", "EC", "RSA"]:
-                                key = cls._parse_openssh(keyblock, keytype, pubpriv)
-                            elif keytype == "SSH2":
-                                key = cls._parse_secsh(keyblock, pubpriv)
-                            else:
-                                raise ValueError(
-                                    f"Unrecognised type of ssh key {keytype}",
-                                )
-                            if key:
-                                keys.append(key)
-                else:
-                    keyblock.append(line)
+            matches = KEY_BOUNDARY_PATTERN.match(line)
+            if inside_keyblock and matches and matches.group("beginend") == "END":
+                inside_keyblock = False  # no longer within a keyblock
+                if keytype == matches.group("keytype") and pubpriv == matches.group(
+                    "pubpriv",
+                ):
+                    if keytype in ["OPENSSH", "DSA", "EC", "RSA"]:
+                        key = cls._parse_openssh(keyblock, keytype, pubpriv)
+                    elif keytype == "SSH2":
+                        key = cls._parse_secsh(keyblock, pubpriv)
+                    else:
+                        raise ValueError(
+                            f"Unrecognised type of ssh key {keytype}",
+                        )
+                    if key:
+                        keys.append(key)
+            elif inside_keyblock:
+                keyblock.append(line)
+            elif matches and matches.group("beginend") == "BEGIN":
+                keytype = matches.group("keytype")
+                pubpriv = matches.group("pubpriv")
+                inside_keyblock = True  # inside a new keyblock
             else:
-                # look for a keyblock start
-                matches = KEY_BOUNDARY_PATTERN.match(line)
-                if matches:
-                    if matches.group("beginend") == "BEGIN":
-                        keytype = matches.group("keytype")
-                        pubpriv = matches.group("pubpriv")
-                        inside_keyblock = True  # inside a new keyblock
-                    continue
-
                 # check for OpenSSH format -- all on one line
                 matches = OPENSSH_PUBKEY_PATTERN.match(line)
                 if matches:
@@ -162,7 +158,7 @@ class Ssh2Key(StrictClass):
         :rtype: list ``Ssh2Key`` objects
         :raises: ValueError
         """
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             data = f.read()
             return cls.parse(data)
 
@@ -232,7 +228,8 @@ class Ssh2Key(StrictClass):
         # Unpack length of data field
         try:
             requested_data_length = struct.unpack(
-                ">I", data[current_position : current_position + INT_LEN],  # noqa: E203
+                ">I",
+                data[current_position : current_position + INT_LEN],  # noqa: E203
             )[0]
         except struct.error:
             raise ValueError("Unable to unpack %s bytes from the data" % INT_LEN)
