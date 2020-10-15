@@ -1,0 +1,14 @@
+site_name: ssh2_parse_key
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.expand
+plugins:
+  - search
+markdown_extensions:
+  - pymdownx.highlight:
+      linenums_style: pymdownx.inline
+  - pymdownx.superfences
+
+# end
