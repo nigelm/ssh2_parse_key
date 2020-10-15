@@ -8,8 +8,8 @@ from collections import OrderedDict
 from classforge import Field
 from classforge import StrictClass
 
-SSH2_KEY_TYPES = ["public", "private"]
-SSH2_KEY_ENCRYPTIONS = ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
+SSH2_KEY_TYPES = ("public", "private")
+SSH2_KEY_ENCRYPTIONS = ("ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519")
 OPENSSH_PUBKEY_PATTERN = re.compile(
     r"""
             ^
