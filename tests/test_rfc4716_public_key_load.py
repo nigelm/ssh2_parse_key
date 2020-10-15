@@ -60,7 +60,10 @@ def test_rfc4716_public_key_file(shared_datadir, format, encryption, comment):
 
 @pytest.mark.parametrize("format,encryption,comment", rfc4716_pubkey_tests)
 def test_rfc4716_public_key_compare_load_file(
-    shared_datadir, format, encryption, comment,
+    shared_datadir,
+    format,
+    encryption,
+    comment,
 ):
     filename = f"test_key_{format}_rfc4716.pub"
     contents = (shared_datadir / filename).read_text()
