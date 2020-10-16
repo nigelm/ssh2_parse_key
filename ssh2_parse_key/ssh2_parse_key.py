@@ -78,7 +78,7 @@ class Ssh2Key:
     headers = attr.ib(
         type=OrderedDict,
         default=attr.Factory(OrderedDict),
-    )
+    )  # type: OrderedDict[str, str]
 
     @classmethod
     def parse(cls, data: str):
