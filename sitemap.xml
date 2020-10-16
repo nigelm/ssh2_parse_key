@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
-     <loc>https://ssh2-parse-key.readthedocs.io/</loc>
+     <loc>https://nigelm.github.io/ssh2_parse_key/</loc>
      <lastmod>2020-10-16</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://ssh2-parse-key.readthedocs.io/library/</loc>
+     <loc>https://nigelm.github.io/ssh2_parse_key/library/</loc>
      <lastmod>2020-10-16</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://ssh2-parse-key.readthedocs.io/contributing/</loc>
+     <loc>https://nigelm.github.io/ssh2_parse_key/contributing/</loc>
      <lastmod>2020-10-16</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://ssh2-parse-key.readthedocs.io/changelog/</loc>
+     <loc>https://nigelm.github.io/ssh2_parse_key/changelog/</loc>
      <lastmod>2020-10-16</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://ssh2-parse-key.readthedocs.io/license/</loc>
+     <loc>https://nigelm.github.io/ssh2_parse_key/license/</loc>
      <lastmod>2020-10-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
