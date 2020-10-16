@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ssh2_parse_key"
-version = "0.3.0"
+version = "0.4.0"
 description = "Parses ssh2 keys and converts to multiple formats."
 authors = ["Nigel Metheringham <nigelm@cpan.org>"]
 license = "MIT"
