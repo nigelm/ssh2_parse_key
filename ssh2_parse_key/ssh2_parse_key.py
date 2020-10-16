@@ -3,8 +3,11 @@ import base64
 import re
 import struct
 import textwrap
+import typing
 from collections import OrderedDict
+from os import PathLike
 from typing import List
+from typing import Match
 
 import attr
 
@@ -148,7 +151,7 @@ class Ssh2Key:
         return keys
 
     @classmethod
-    def parse_file(cls, filepath: str):
+    def parse_file(cls, filepath: "PathLike[str]") -> "List[Ssh2Key]":
         """
         Creates a set of `Ssh2Key` objects from a file of ssh key data
 
@@ -172,7 +175,7 @@ class Ssh2Key:
             return cls.parse(data)
 
     @classmethod
-    def _parse_openssh_oneline(cls, matches):
+    def _parse_openssh_oneline(cls, matches: Match):
         """Build a openssh public key from regex match components."""
         key = matches.group("key")
         encryption = matches.group("encryption")
@@ -196,7 +199,7 @@ class Ssh2Key:
         return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod
-    def _initial_parse_keyblock(cls, keyblock):
+    def _initial_parse_keyblock(cls, keyblock: "List[str]") -> tuple:
         headers = OrderedDict([("Comment", "")])  # default empty comment
         in_header = False
         header = ""
@@ -374,7 +377,7 @@ class Ssh2Key:
         else:
             return ""
 
-    def subject(self):
+    def subject(self) -> "typing.Union[str, None]":
         """
         Returns the subject header from a ssh key object.
 
