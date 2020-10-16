@@ -104,7 +104,7 @@ class Ssh2Key:
         lines = data.splitlines()  # break the input into lines
         keys = []  # the keys we have parsed
         inside_keyblock = False  # where we are
-        keyblock = []  # type: List[str]
+        keyblock = []
         keytype = ""
         pubpriv = ""
 
@@ -335,7 +335,7 @@ class Ssh2Key:
         Returns:
             string: Single openssh key as a string including newlines and with terminating newline.
         """
-        lines = []  # type: List[str]
+        lines = []
         if self.type == "public":
             lines.append(" ".join([self.encryption, self.key, self.comment()]))
         else:
