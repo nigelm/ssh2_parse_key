@@ -4,6 +4,7 @@ import re
 import struct
 import textwrap
 from collections import OrderedDict
+from typing import List
 
 import attr
 
@@ -101,9 +102,9 @@ class Ssh2Key:
 
         """
         lines = data.splitlines()  # break the input into lines
-        keys = []  # the keys we have parsed
+        keys = []  # type: List[Ssh2Key]
         inside_keyblock = False  # where we are
-        keyblock = []
+        keyblock = []  # type: List[str]
         keytype = ""
         pubpriv = ""
 
@@ -275,7 +276,7 @@ class Ssh2Key:
         Returns:
             string: Single secsh key as a string including newlines and with terminating newline.
         """
-        lines = []
+        lines = []  # type: List[str]
         if self.type == "public":
             key_header_chunk = "SSH2 PUBLIC KEY"
         else:
@@ -334,7 +335,7 @@ class Ssh2Key:
         Returns:
             string: Single openssh key as a string including newlines and with terminating newline.
         """
-        lines = []
+        lines = []  # type: List[str]
         if self.type == "public":
             lines.append(" ".join([self.encryption, self.key, self.comment()]))
         else:
