@@ -5,6 +5,6 @@ __all__ = ["Ssh2Key"]
 
 __author__ = "Nigel Metheringham"
 __email__ = "nigelm@cpan.org"
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 
 # end
