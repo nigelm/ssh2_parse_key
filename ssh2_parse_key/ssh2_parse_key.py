@@ -75,7 +75,8 @@ class Ssh2Key:
         default="ssh-rsa",
         validator=attr.validators.in_(SSH2_KEY_ENCRYPTIONS),
     )
-    headers: "OrderedDict[str, str]" = attr.ib(
+    headers = attr.ib(
+        type=OrderedDict,
         default=attr.Factory(OrderedDict),
     )
 
