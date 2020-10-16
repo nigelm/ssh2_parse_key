@@ -230,7 +230,7 @@ class Ssh2Key:
         return (headers, data, key)
 
     @classmethod
-    def _unpack_by_int(cls, data: bytes, current_position: int):
+    def _unpack_by_int(cls, data, current_position):
         """Returns a tuple with (location of next data field, contents of requested data field)."""
         # Unpack length of data field
         try:
