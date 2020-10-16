@@ -82,7 +82,7 @@ class Ssh2Key:
     )  # type: OrderedDict[str, str]
 
     @classmethod
-    def parse(cls, data: str):
+    def parse(cls, data: str) -> "List[Ssh2Key]":
         """
         Creates a set of `Ssh2Key` objects from a string of ssh key data
 
@@ -180,12 +180,12 @@ class Ssh2Key:
         return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod
-    def _parse_openssh(cls, keyblock, keytype, pubpriv):
+    def _parse_openssh(cls, keyblock: "List[str]", keytype: str, pubpriv: str) -> None:
         """Decode an openssh keyblock into a key object."""
         raise ValueError("Cannot currently decode openssh format keyblocks")
 
     @classmethod
-    def _parse_secsh(cls, keyblock, pubpriv):
+    def _parse_secsh(cls, keyblock: "List[str]", pubpriv: str) -> "Ssh2Key":
         """Decode an secsh/RFC4716 keyblock into a key object."""
         if pubpriv != "PUBLIC":
             raise ValueError("Can only decode secsh public keys")
@@ -204,7 +204,7 @@ class Ssh2Key:
         index = 0
         for line in keyblock:
             if in_header:
-                if line.match("\\$"):  # trailing backslash
+                if re.match(r"\\$", line):  # trailing backslash
                     value = value + line[:-1]
                 else:
                     value = value + line
@@ -232,7 +232,7 @@ class Ssh2Key:
         return (headers, data, key)
 
     @classmethod
-    def _unpack_by_int(cls, data, current_position):
+    def _unpack_by_int(cls, data: bytes, current_position: int):
         """Returns a tuple with (location of next data field, contents of requested data field)."""
         # Unpack length of data field
         try:
@@ -260,7 +260,7 @@ class Ssh2Key:
         current_position += requested_data_length
         return current_position, next_data
 
-    def secsh(self):
+    def secsh(self) -> str:
         """
         Returns an SSH public key in SECSH format (as specified in RFC4716).
         Preserves headers and the order of headers.  Returned as a single
@@ -301,7 +301,7 @@ class Ssh2Key:
         # return the assembled string
         return "\n".join(lines)
 
-    def rfc4716(self):
+    def rfc4716(self) -> str:
         """
         Returns an SSH public key in SECSH format (as specified in RFC4716).
         Preserves headers and the order of headers.  Returned as a single
@@ -321,7 +321,7 @@ class Ssh2Key:
         """
         return self.secsh()
 
-    def openssh(self):
+    def openssh(self) -> str:
         """
         Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
         field parsed from either SECSH or OpenSSH.  Returned as a single
@@ -360,7 +360,7 @@ class Ssh2Key:
         # return the assembled string
         return "\n".join(lines)
 
-    def comment(self):
+    def comment(self) -> str:
         """
         Returns the comment header from a ssh key object.
 
@@ -385,8 +385,15 @@ class Ssh2Key:
         """
         if "Subject" in self.headers:
             return self.headers["Subject"]
+        return None
 
-    def _encode_header(self, data, header, value, limit):
+    def _encode_header(
+        self,
+        data: "List[str]",
+        header: str,
+        value: str,
+        limit: int,
+    ) -> None:
         bits = textwrap.wrap(f"{header}: {value}", limit)
         last = bits.pop()
         for bit in bits:
