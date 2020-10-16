@@ -1,7 +1,7 @@
 # ssh2_parse_key
 
 [![ci](https://img.shields.io/travis/nigelm/ssh2_parse_key.svg)](https://travis-ci.com/nigelm/ssh2_parse_key)
-[![documentation](https://readthedocs.org/projects/ssh2-parse-key/badge/?version=latest)](https://ssh2-parse-key.readthedocs.io/en/latest/)
+[![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://nigelm.github.io/ssh2_parse_key/)
 [![pypi version](https://img.shields.io/pypi/v/ssh2_parse_key.svg)](https://pypi.python.org/pypi/ssh2_parse_key)
 
 Parses ssh2 public keys in either openssh or RFC4716/Secsh formats and

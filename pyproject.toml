@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.rst"
 homepage = "https://pypi.org/project/ssh2-parse-key/"
 repository = "https://github.com/nigelm/ssh2_parse_key"
-documentation = "https://ssh2-parse-key.readthedocs.io/"
+documentation = "https://nigelm.github.io/ssh2_parse_key/"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",

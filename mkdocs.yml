@@ -1,6 +1,6 @@
 site_name: ssh2_parse_key
 site_description: "Automatic documentation from sources, for MkDocs."
-site_url: "https://ssh2-parse-key.readthedocs.io/"
+site_url: "https://nigelm.github.io/ssh2_parse_key/"
 repo_url: "https://github.com/nigelm/ssh2_parse_key"
 repo_name: "nigelm/ssh2_parse_key"
 
