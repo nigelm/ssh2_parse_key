@@ -3,6 +3,7 @@ import base64
 import re
 import struct
 import textwrap
+import typing
 from collections import OrderedDict
 
 import attr
@@ -66,14 +67,12 @@ class Ssh2Key:
 
     """
 
-    key = attr.ib(type=str)
-    type = attr.ib(
-        type=str,
+    key: str = attr.ib()
+    type: str = attr.ib(
         default="public",
         validator=attr.validators.in_(SSH2_KEY_TYPES),
     )
-    encryption = attr.ib(
-        type=str,
+    encryption: str = attr.ib(
         default="ssh-rsa",
         validator=attr.validators.in_(SSH2_KEY_ENCRYPTIONS),
     )
@@ -83,7 +82,7 @@ class Ssh2Key:
     )
 
     @classmethod
-    def parse(cls, data):
+    def parse(cls, data: str):
         """
         Creates a set of `Ssh2Key` objects from a string of ssh key data
 
@@ -149,7 +148,7 @@ class Ssh2Key:
         return keys
 
     @classmethod
-    def parse_file(cls, filepath):
+    def parse_file(cls, filepath: str):
         """
         Creates a set of `Ssh2Key` objects from a file of ssh key data
 
@@ -368,10 +367,12 @@ class Ssh2Key:
         Arguments:
 
         Returns:
-            string: Comment field or `None`.
+            string: Comment field or an empty string.
         """
         if "Comment" in self.headers:
             return self.headers["Comment"]
+        else:
+            return ""
 
     def subject(self):
         """
