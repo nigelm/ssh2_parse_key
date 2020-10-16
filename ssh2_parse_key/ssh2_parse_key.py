@@ -1,4 +1,4 @@
-"""Main module for ssh2_parse_key - provides Ssh2Key()"""
+"""Main module for `ssh2_parse_key` - provides `Ssh2Key()`"""
 import base64
 import re
 import struct
@@ -55,48 +55,46 @@ class Ssh2Key(StrictClass):
     """
     Encapsulates an ssh public key
 
-    An Ssh2Key object is immutable after creation.  Typically you would create
-    Ssh2Key objects by using ``parse()`` or ``parse_file()`` class methods.
+    An `Ssh2Key` object is immutable after creation.  Typically you would create
+    `Ssh2Key` objects by using `parse()` or `parse_file()` class methods.
 
-    :param key: The ssh key itself
-    :type key: string
-    :param type: is this a public or private key
-    :type type: one of ["public", "private"]
-    :param encryption: The encryption type of the key
-    :type encryption: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]
-    :param headers: Any headers for the key - eg Comment
-    :type headers: OrderedDict
+    Attributes:
+        key: The ssh key itself, Base64 string
+        type: one of `public` or `private`
+        encryption: one of `ssh-rsa`, `ssh-dss`, `ecdsa-sha2-nistp256`, `ssh-ed25519`
+        headers: Any headers for the key - eg Comment.
 
     """
 
-    #: string - base64 encoded: The ssh key itself
     key = Field(type=str, required=True, mutable=False)
-    #: string - one of ["public", "private"]: is this a public or private key
     type = Field(type=str, choices=SSH2_KEY_TYPES, default="public", mutable=False)
-    #: one of ["ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519"]: The encryption
-    #: type of the key
     encryption = Field(
         type=str,
         choices=SSH2_KEY_ENCRYPTIONS,
         default="ssh-rsa",
         mutable=False,
     )
-    #: OrderedDict: Any headers for the key - eg Comment
     headers = Field(type=OrderedDict, default={}, mutable=False)
 
     @classmethod
     def parse(cls, data):
         """
-        Creates a set of Ssh2Key objects from a string of ssh key data
+        Creates a set of `Ssh2Key` objects from a string of ssh key data
 
         Accepts a block of text containing SSH2 public keys (in either OpenSSH or
-        SECSH format) and parses out SSH2 public keys returning them as Ssh2Key
+        SECSH format) and parses out SSH2 public keys returning them as `Ssh2Key`
         Objects.
 
-        :param data: A multiline string of ssh key data in OpenSSH or SECSH format
-        :type data: str
-        :rtype: list ``Ssh2Key`` objects
-        :raises: ValueError
+        Arguments:
+            data: A multiline string of ssh key data in OpenSSH or SECSH format
+
+        Raises:
+            ValueError: Unrecognised type of ssh key
+            ValueError: No valid ssh keys found
+
+        Returns:
+            keys: A list of  `Ssh2Key` objects
+
         """
         lines = data.splitlines()  # break the input into lines
         keys = []  # the keys we have parsed
@@ -147,16 +145,22 @@ class Ssh2Key(StrictClass):
     @classmethod
     def parse_file(cls, filepath):
         """
-        Creates a set of Ssh2Key objects from a file of ssh key data
+        Creates a set of `Ssh2Key` objects from a file of ssh key data
 
         Accepts a block of text containing SSH2 public keys (in either OpenSSH or
-        SECSH format) and parses out SSH2 public keys returning them as Ssh2Key
+        SECSH format) and parses out SSH2 public keys returning them as `Ssh2Key`
         Objects.
 
-        :param filepath: A pathname of a file containing ssh key data
-        :type filepath: str
-        :rtype: list ``Ssh2Key`` objects
-        :raises: ValueError
+        Arguments:
+            data: A multiline string of ssh key data in OpenSSH or SECSH format
+
+        Raises:
+            IOError: From underlying open/read
+            ValueError: Unrecognised type of ssh key
+            ValueError: No valid ssh keys found
+
+        Returns:
+            keys: A list of  `Ssh2Key` objects
         """
         with open(filepath) as f:
             data = f.read()
@@ -259,7 +263,13 @@ class Ssh2Key(StrictClass):
 
         See http://tools.ietf.org/html/rfc4716
 
-        :rtype: str
+        Arguments:
+
+        Raises:
+            ValueError: Unable to output secsh format private keys
+
+        Returns:
+            string: Single secsh key as a string including newlines and with terminating newline.
         """
         lines = []
         if self.type == "public":
@@ -296,7 +306,13 @@ class Ssh2Key(StrictClass):
 
         See http://tools.ietf.org/html/rfc4716
 
-        :rtype: str
+        Arguments:
+
+        Raises:
+            ValueError: Unable to output secsh format private keys
+
+        Returns:
+            string: Single secsh key as a string including newlines and with terminating newline.
         """
         return self.secsh()
 
@@ -306,7 +322,13 @@ class Ssh2Key(StrictClass):
         field parsed from either SECSH or OpenSSH.  Returned as a single
         string including newlines and with terminating newline.
 
-        :rtype: str
+        Arguments:
+
+        Raises:
+            ValueError: Unable to output openssh format private keys
+
+        Returns:
+            string: Single openssh key as a string including newlines and with terminating newline.
         """
         lines = []
         if self.type == "public":
@@ -337,7 +359,10 @@ class Ssh2Key(StrictClass):
         """
         Returns the comment header from a ssh key object.
 
-        :rtype: str
+        Arguments:
+
+        Returns:
+            string: Comment field or `None`.
         """
         if "Comment" in self.headers:
             return self.headers["Comment"]
@@ -346,7 +371,10 @@ class Ssh2Key(StrictClass):
         """
         Returns the subject header from a ssh key object.
 
-        :rtype: str
+        Arguments:
+
+        Returns:
+            string: Subject field or `None`.
         """
         if "Subject" in self.headers:
             return self.headers["Subject"]
