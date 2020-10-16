@@ -5,6 +5,7 @@ import struct
 import textwrap
 import typing
 from collections import OrderedDict
+from typing import List
 
 import attr
 
@@ -76,8 +77,7 @@ class Ssh2Key:
         default="ssh-rsa",
         validator=attr.validators.in_(SSH2_KEY_ENCRYPTIONS),
     )
-    headers = attr.ib(
-        type=OrderedDict,
+    headers: "OrderedDict[str, str]" = attr.ib(
         default=attr.Factory(OrderedDict),
     )
 
@@ -104,7 +104,7 @@ class Ssh2Key:
         lines = data.splitlines()  # break the input into lines
         keys = []  # the keys we have parsed
         inside_keyblock = False  # where we are
-        keyblock = []
+        keyblock: "List[str]" = []
         keytype = ""
         pubpriv = ""
 
@@ -157,7 +157,7 @@ class Ssh2Key:
         Objects.
 
         Arguments:
-            data: A multiline string of ssh key data in OpenSSH or SECSH format
+            filepath: Pathname of a file of ssh key data in OpenSSH or SECSH format
 
         Raises:
             IOError: From underlying open/read
@@ -232,7 +232,7 @@ class Ssh2Key:
         return (headers, data, key)
 
     @classmethod
-    def _unpack_by_int(cls, data, current_position):
+    def _unpack_by_int(cls, data: bytes, current_position: int):
         """Returns a tuple with (location of next data field, contents of requested data field)."""
         # Unpack length of data field
         try:
@@ -335,7 +335,7 @@ class Ssh2Key:
         Returns:
             string: Single openssh key as a string including newlines and with terminating newline.
         """
-        lines = []
+        lines: "List[str]" = []
         if self.type == "public":
             lines.append(" ".join([self.encryption, self.key, self.comment()]))
         else:
