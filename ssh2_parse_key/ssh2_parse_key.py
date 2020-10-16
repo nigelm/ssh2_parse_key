@@ -3,9 +3,7 @@ import base64
 import re
 import struct
 import textwrap
-import typing
 from collections import OrderedDict
-from typing import List
 
 import attr
 
