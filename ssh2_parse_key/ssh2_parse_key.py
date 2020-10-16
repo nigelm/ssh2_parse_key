@@ -5,8 +5,7 @@ import struct
 import textwrap
 from collections import OrderedDict
 
-from classforge import Field
-from classforge import StrictClass
+import attr
 
 SSH2_KEY_TYPES = ("public", "private")
 SSH2_KEY_ENCRYPTIONS = ("ssh-rsa", "ssh-dss", "ecdsa-sha2-nistp256", "ssh-ed25519")
@@ -51,7 +50,8 @@ HEADER_LINE_PATTERN = re.compile(
 INT_LEN = 4
 
 
-class Ssh2Key(StrictClass):
+@attr.s(slots=True, frozen=True, kw_only=True)
+class Ssh2Key:
     """
     Encapsulates an ssh public key
 
@@ -66,15 +66,21 @@ class Ssh2Key(StrictClass):
 
     """
 
-    key = Field(type=str, required=True, mutable=False)
-    type = Field(type=str, choices=SSH2_KEY_TYPES, default="public", mutable=False)
-    encryption = Field(
+    key = attr.ib(type=str)
+    type = attr.ib(
         type=str,
-        choices=SSH2_KEY_ENCRYPTIONS,
-        default="ssh-rsa",
-        mutable=False,
+        default="public",
+        validator=attr.validators.in_(SSH2_KEY_TYPES),
     )
-    headers = Field(type=OrderedDict, default={}, mutable=False)
+    encryption = attr.ib(
+        type=str,
+        default="ssh-rsa",
+        validator=attr.validators.in_(SSH2_KEY_ENCRYPTIONS),
+    )
+    headers = attr.ib(
+        type=OrderedDict,
+        default=attr.Factory(OrderedDict),
+    )
 
     @classmethod
     def parse(cls, data):
