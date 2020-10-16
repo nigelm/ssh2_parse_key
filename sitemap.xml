@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
+     <loc>https://ssh2-parse-key.readthedocs.io/</loc>
+     <lastmod>2020-10-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://ssh2-parse-key.readthedocs.io/library/</loc>
+     <lastmod>2020-10-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://ssh2-parse-key.readthedocs.io/contributing/</loc>
+     <lastmod>2020-10-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://ssh2-parse-key.readthedocs.io/changelog/</loc>
+     <lastmod>2020-10-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://ssh2-parse-key.readthedocs.io/license/</loc>
+     <lastmod>2020-10-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+</urlset>
