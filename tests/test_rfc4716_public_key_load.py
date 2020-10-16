@@ -69,7 +69,7 @@ def test_rfc4716_public_key_compare_load_file(
     contents = (shared_datadir / filename).read_text()
     pubkey = Ssh2Key.parse(contents)[0]
     fpubkey = Ssh2Key.parse_file(shared_datadir / filename)[0]
-    assert pubkey.to_dict() == fpubkey.to_dict()
+    assert pubkey == fpubkey
 
 
 # end
