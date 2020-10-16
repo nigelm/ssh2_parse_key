@@ -1,0 +1,42 @@
+site_name: ssh2_parse_key
+site_description: "Automatic documentation from sources, for MkDocs."
+site_url: "https://nigelm.github.io/ssh2_parse_key/"
+repo_url: "https://github.com/nigelm/ssh2_parse_key"
+repo_name: "nigelm/ssh2_parse_key"
+
+nav:
+  - Overview: index.md
+  - API Reference: library.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+  - License: license.md
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.expand
+
+extra_css:
+  - css/mkdocstrings.css
+
+markdown_extensions:
+  - pymdownx.highlight:
+      linenums_style: pymdownx.inline
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - markdown_include.include
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+          selection:
+            new_path_syntax: yes
+      watch:
+        - ssh2_parse_key
+# end

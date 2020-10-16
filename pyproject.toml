@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.rst"
 homepage = "https://pypi.org/project/ssh2-parse-key/"
 repository = "https://github.com/nigelm/ssh2_parse_key"
-documentation = "https://ssh2-parse-key.readthedocs.io/"
+documentation = "https://nigelm.github.io/ssh2_parse_key/"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -20,11 +20,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 include = [
-    "AUTHORS.rst",
-    "CONTRIBUTING.rst",
-    "HISTORY.rst",
-    "LICENSE",
-    "README.rst",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "README.md",
     "tests/*",
     "docs/*"
 ]
@@ -34,7 +32,7 @@ exclude = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = ">=3.6,<4.0"
 classforge = "^0.92"
 
 [tool.poetry.dev-dependencies]
@@ -44,8 +42,10 @@ flake8 = "^3.8.4"
 pytest = "^6.1.1"
 pytest-datadir = "^1.3.1"
 pytest-runner = "^5.2"
-Sphinx = "^3.2.1"
-sphinx-rtd-theme = "^0.5.0"
+mkdocs = "^1.1.2"
+mkdocs-material = "^6.0.2"
+mkdocstrings = "^0.13.6"
+markdown-include = "^0.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
