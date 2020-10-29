@@ -196,9 +196,59 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Overview
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="." class="md-nav__link md-nav__link--active">
       Overview
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -268,6 +318,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -291,7 +377,7 @@
 converts to either format.</p>
 <p>At this point any attempt to work with private keys will raise an exception.</p>
 <hr />
-<h1 id="features">Features</h1>
+<h2 id="features">Features</h2>
 <ul>
 <li>Reads public keys of the following encryption types:-<ul>
 <li><code>ssh-rsa</code></li>
@@ -305,12 +391,12 @@ converts to either format.</p>
 <li>Can output either format for any key</li>
 </ul>
 <hr />
-<h1 id="installation">Installation</h1>
+<h2 id="installation">Installation</h2>
 <p>With <code>pip</code>:
 <div class="highlight"><pre><span></span><code>python3.6 -m pip install ssh2_parse_key
 </code></pre></div></p>
 <hr />
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 <p>To use SSH2 Key Parsing in a project</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">ssh2_parse_key</span> <span class="kn">import</span> <span class="n">Ssh2Key</span>
 
@@ -338,9 +424,8 @@ converts to either format.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">openssh</span><span class="p">())</span>
 </code></pre></div>
 <hr />
-<h1 id="credits">Credits</h1>
+<h2 id="credits">Credits</h2>
 <p>The package is strongly based on the perl <a href="https://metacpan.org/pod/Parse::SSH2::PublicKey"><code>Parse::SSH2::PublicKey</code></a> module.</p>
-<p>The class is built using Michael DeHaan's <a href="https://classforge.io/"><code>ClassForge</code></a> object system.</p>
 <p>Development on the python version was done by <a href="https://github.com/nigelm/"><code>Nigel Metheringham &lt;nigelm@cpan.org&gt;</code></a></p>
 <hr />
                 

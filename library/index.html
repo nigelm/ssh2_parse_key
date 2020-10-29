@@ -856,7 +856,7 @@ __hash__<span class="p">(</span><span class="bp">self</span><span class="p">)</s
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span>
-                <span class="o">-</span><span class="mi">5741410198400567549</span><span class="p">,</span>
+                <span class="mi">3336502440482993136</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">encryption</span><span class="p">,</span>
@@ -1376,6 +1376,7 @@ Objects.</p>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
                     <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">keyblock</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># fresh keyblock for next key</span>
         <span class="k">elif</span> <span class="n">inside_keyblock</span><span class="p">:</span>
             <span class="n">keyblock</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">matches</span> <span class="ow">and</span> <span class="n">matches</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"beginend"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"BEGIN"</span><span class="p">:</span>
