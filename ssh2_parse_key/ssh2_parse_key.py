@@ -128,6 +128,7 @@ class Ssh2Key:
                         )
                     if key:
                         keys.append(key)
+                keyblock = []  # fresh keyblock for next key
             elif inside_keyblock:
                 keyblock.append(line)
             elif matches and matches.group("beginend") == "BEGIN":

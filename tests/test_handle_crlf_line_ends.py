@@ -48,4 +48,46 @@ def test_convert_rfc4716_to_openssh(shared_datadir, format, encryption):
     assert openssh_pubkey.secsh() == rfc4716_contents
 
 
+def test_load_multiple_rfc4716(shared_datadir):
+    contents = []
+    for (format, encryption) in convert_pubkey_tests:
+        rfc4716_filename = f"test_key_{format}_rfc4716.pub"
+        rfc4716_contents = (shared_datadir / rfc4716_filename).read_text()
+        contents.append(rfc4716_contents.replace("\n", "\r\n"))
+    keys = Ssh2Key.parse("".join(contents))
+    #
+    # check we have the right number
+    assert len(keys) == len(contents)
+
+
+def test_load_inline():
+    key_contents = (
+        "---- BEGIN SSH2 PUBLIC KEY ----\r\n"
+        "Comment: nigel@weatherwax.intechnology.co.uk\r\n"
+        "AAAAC3NzaC1lZDI1NTE5AAAAIC8LzfyUV6Z7hZu7dPZ6aDpE/dMRjIaIlaFgQB/vf1FH\r\n"
+        "---- END SSH2 PUBLIC KEY ----\r\n"
+        "---- BEGIN SSH2 PUBLIC KEY ----\r\n"
+        "Comment: nigel@weatherwax.intechnology.co.uk\r\n"
+        "AAAAC3NzaC1lZDI1NTE5AAAAIC8LzfyUV6Z7hZu7dPZ6aDpE/dMRjIaIlaFgQB/vf1FH\r\n"
+        "---- END SSH2 PUBLIC KEY ----\r\n"
+        "---- BEGIN SSH2 PUBLIC KEY ----\r\n"
+        "Comment: nigel@weatherwax-2016\r\n"
+        "AAAAB3NzaC1yc2EAAAADAQABAAABgQDUY4IlGS2XSu+HpopBTE2FFOUzg6zY+B9h0I3kG5\r\n"
+        "EmUNdV/ybduOH/zTuynNL4nfF1dPUxFmd+YfwAmmBxYXhLA5vHFdcASK5Lg4GazJVVy+nO\r\n"
+        "aw3KedsO4IpRgDDwUTG6mwUp5WNXOrjdQJDhSGucaLvXYOZcxP2juvKgkOQHQp2oEmftC1\r\n"
+        "WcYCR0BKx7NlctFHw+3hMI3ZHqRulnMKZ7MCOjDUEBX3XW5LTlTtT8XrUm6aZ+AxLoyhQI\r\n"
+        "K7Ny7yj7lyuVD56hvzU6JhAKeW+TZ3+Sewo92/ljVy3fT6KHXP7keUJVkDwPFir8afsWEv\r\n"
+        "hVi9fjbWNKic2YUz18f3t5qsb0y9Qw88UIM7argp7ncg0oSrmh+0R92+wLz3VAmR7iD4Wp\r\n"
+        "Rk45zKU/bnRjdYw8omJJQ4qQuFFDF83qpbbSncDBtn/hMzqP6Ynbis6HqsYpbLKYByNvYZ\r\n"
+        "tMVsP4DAn5zhsBbBUJm7F6nwY4VcTZoUd+KYD3+DOHigaI6vcbxas=\r\n"
+        "---- END SSH2 PUBLIC KEY ----\r\n"
+        "---- BEGIN SSH2 PUBLIC KEY ----\r\n"
+        "Comment: nigel@weatherwax.intechnology.co.uk\r\n"
+        "AAAAC3NzaC1lZDI1NTE5AAAAIC8LzfyUV6Z7hZu7dPZ6aDpE/dMRjIaIlaFgQB/vf1FH\r\n"
+        "---- END SSH2 PUBLIC KEY ----\r\n"
+    )
+    keys = Ssh2Key.parse("".join(key_contents))
+    assert len(keys) == 4
+
+
 # end
