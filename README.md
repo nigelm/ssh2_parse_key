@@ -11,7 +11,7 @@ At this point any attempt to work with private keys will raise an exception.
 
 ----
 
-# Features
+## Features
 
 - Reads public keys of the following encryption types:-
     - `ssh-rsa`
@@ -24,7 +24,7 @@ At this point any attempt to work with private keys will raise an exception.
 
 ----
 
-# Installation
+## Installation
 
 With `pip`:
 ```bash
@@ -33,7 +33,7 @@ python3.6 -m pip install ssh2_parse_key
 
 ----
 
-# Usage
+## Usage
 
 To use SSH2 Key Parsing in a project
 
@@ -66,11 +66,9 @@ for public_key in keys:
 
 ----
 
-# Credits
+## Credits
 
 The package is strongly based on the perl [`Parse::SSH2::PublicKey`](https://metacpan.org/pod/Parse::SSH2::PublicKey) module.
-
-The class is built using Michael DeHaan's [`ClassForge`](https://classforge.io/) object system.
 
 Development on the python version was done by [`Nigel Metheringham <nigelm@cpan.org>`](https://github.com/nigelm/)
 

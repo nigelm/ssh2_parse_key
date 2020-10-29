@@ -1,4 +1,9 @@
 # Config file for automatic testing at travis-ci.com
+##
+## NB This requires the following variables to be defined against
+## The project in travis-ci:-
+##  GH_TOKEN        - Github PAT allowing documentation push to github pages
+##  PYPI_PASSWORD   - PYPI Token (not password) allowing push to pypi
 
 language: python
 python:
@@ -11,7 +16,6 @@ install:
 script:
   - poetry run pytest
   - poetry run mkdocs build
-after_success: codecov
 
 stages:
   - test
