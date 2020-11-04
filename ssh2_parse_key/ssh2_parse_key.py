@@ -196,7 +196,6 @@ class Ssh2Key:
         headers, data, key = cls._initial_parse_keyblock(keyblock)
         current_position, encryption = cls._unpack_by_int(data, 0)
         encryption = encryption.decode()
-        print(f"encryption='{encryption}'")
         return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod

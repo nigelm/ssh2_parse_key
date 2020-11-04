@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+- Removed debug print statement mistakenly left in place
+
 [0.7.1] - 2020-10-29
 --------------------
 - Fixed bug where parsing multiple keys could fail as the parser managed
