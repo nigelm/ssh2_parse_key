@@ -37,8 +37,6 @@ attrs = "^20.2.0"
 
 [tool.poetry.dev-dependencies]
 bump2version = "^1.0.1"
-distlib = "^0.3.1"
-flake8 = "^3.8.4"
 pytest = "^6.1.1"
 pytest-datadir = "^1.3.1"
 pytest-runner = "^5.2"
@@ -50,3 +48,30 @@ markdown-include = "^0.6.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# Ruff configuration. This is made strict by setting select to all. We then manually ignore checks we disagree with.
+# D203 (one-blank-line-before-class): This is incompatible with D211 (one-blank-line-before-class).
+# D213 (multi-line-summary-second-line): This is incompatible with D212 (multi-line-summary-first-line).
+# FBT (flake8-boolean-trap): Don't currently see the value in this and was struggling to implement.
+# FA (flake8-future-annotations): No requirement to verify files written for old Python versions.
+# INP001 (implicit-namespace-package): Tests directory seems to create a false positive. Don't see the value in it.
+# I001 (unsorted-imports): Prefer the reorder-python-imports pre-commit hook for sorting imports.
+line-length = 120
+select = ["ALL"]
+ignore = ["D203", "D213", "FBT", "FA", "INP001", "I001", "COM812", "ISC001", "ERA001", "G004", "ANN003", "RUF012", "D415", "N818"]
+target-version = "py311"
+
+[tool.ruff.per-file-ignores]
+# S101 / tests: Ignore this in the tests directory. Assert is fine in this directory.
+"tests/*" = ["S101"]
+
+[tool.ruff.pydocstyle]
+# Set the Docstring convention to Google, as that is the preferred docstring format for this project.
+convention = "google"
+
+[tool.mypy]
+# Mypy configuration.
+# strict = true
+
+# end

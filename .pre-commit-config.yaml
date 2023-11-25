@@ -1,71 +1,165 @@
-# Initial content coming from
-# https://github.com/pre-commit/pre-commit-hooks/blob/master/.pre-commit-config.yaml
+# -------------------------------------------------------------------------------------------------------------------- #
+# Define the repositories and associated hooks that should be run against this project.
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-docstring-first
-    -   id: check-json
-    -   id: check-added-large-files
-    -   id: check-yaml
-    -   id: debug-statements
-    -   id: requirements-txt-fixer
-    -   id: check-ast
-    -   id: check-builtin-literals
-    -   id: check-byte-order-marker
-    -   id: check-case-conflict
-    -   id: check-executables-have-shebangs
-    -   id: check-merge-conflict
-    -   id: check-symlinks
-    -   id: check-toml
-    -   id: check-vcs-permalinks
-    -   id: check-xml
-    -   id: file-contents-sorter
-    -   id: forbid-new-submodules
-    -   id: mixed-line-ending
-    -   id: pretty-format-json
-    -   id: sort-simple-yaml
+    # ------------------------------------------------------------------------------------------------------------------ #
+    - repo: https://github.com/python-poetry/poetry
+      rev: "1.7.0" # add version here
+      hooks:
+          - id: poetry-check
+          # - id: poetry-lock
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # These are your stand out-of-the-box hooks for pre-commit.
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.5.0
+      hooks:
+          # Prevent giant files from being committed. Defaults to 500kB. Change with this arg: ['--maxkb=123']
+          - id: check-added-large-files
+            exclude: ^(frontend/package-lock\.json)
+          # Simply check whether files parse as valid python.
+          - id: check-ast
+          # Require literal syntax when initializing empty or zero Python builtin types.
+          - id: check-builtin-literals
+          # Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
+          - id: check-case-conflict
+          # Prevent imports coming before docstrings, which is common/easy mistake with future imports and docstrings.
+          - id: check-docstring-first
+          # Checks that non-binary executables have a proper shebang.
+          - id: check-executables-have-shebangs
+          # Attempts to load all json files to verify syntax.
+          - id: check-json
+          # Check for files that contain merge conflict strings.
+          - id: check-merge-conflict
+          # Checks for symlinks which do not point to anything.
+          - id: check-symlinks
+          # Attempts to load all TOML files to verify syntax.
+          - id: check-toml
+          # Ensures that links to vcs websites are permalinks.
+          - id: check-vcs-permalinks
+          # Attempts to load all xml files to verify syntax.
+          - id: check-xml
+          # Attempts to load all yaml files to verify syntax. The unsafe argument will force it to load extensions, which is
+          # fine for this template as it's only used for internal projects.
+          - id: check-yaml
+            args: [--unsafe]
+          # Check for debugger imports and py37+ breakpoint() calls in python source.
+          - id: debug-statements
+          # Makes sure files end in a newline, and only a newline.
+          - id: end-of-file-fixer
+          # Removes UTF-8 byte order marker.
+          - id: fix-byte-order-marker
+          # Forbids any submodules in the repository.
+          - id: forbid-submodules
+          # Replaces or checks mixed line ending.
+          - id: mixed-line-ending
+          # verifies that test files are named correctly. The default is .*_test\.py, however PyTest says that test files
+          # should start with test. Therefore, the pytest-test-first arg is added.
+          - id: name-tests-test
+            args: [--pytest-test-first]
+          # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented. Autofix is
+          # enabled to correct any issues automatically.
+          - id: pretty-format-json
+            args: [--autofix]
+          # Sorts entries in requirements.txt and constraints.txt and removes incorrect entry for pkg-resources==0.0.0
+          - id: requirements-txt-fixer
+          # Trims trailing whitespace on the end of a line.
+          - id: trailing-whitespace
 
--   repo: https://github.com/ambv/black
-    rev: 20.8b1
-    hooks:
-    - id: black
-      language_version: python3
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Ruff is an extremely fast Python linter, written in Rust. It is intended to replace Flake8, isort, pydocstyle,
+    # yesqa, eradicate, pyupgrade, and autoflake. Autofix has been enabled, as this will fix some reported issues.
+    # The formatter is also used in place of black
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      rev: v0.1.6
+      hooks:
+          - id: ruff-format
+          - id: ruff
+            args: [--fix, --exit-non-zero-on-fix]
+            exclude: utils/create_ripe_classes.py # This is not part of the release and will be tidied later
 
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
-    hooks:
-    -   id: flake8
-        args: ['--max-line-length=110', '--ignore=F821', '--ignore=E203']
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # This hook will validate a pre-commit hooks manifest file. Unlikely to be relevant to any project that this template
+    # is used by, however it doesn't place any extra load as only runs on .pre-commit-hooks.yaml files.
+    - repo: https://github.com/pre-commit/pre-commit
+      rev: v3.5.0
+      hooks:
+          - id: validate_manifest
 
--   repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.3.5
-    hooks:
-    -   id: reorder-python-imports
-        args: [--py3-plus]
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Automatically upgrades syntax for newer versions of Python.
+    - repo: https://github.com/asottile/pyupgrade
+      rev: v3.15.0
+      hooks:
+          - id: pyupgrade
+            args: [--py311-plus]
 
--   repo: https://github.com/asottile/pyupgrade
-    rev: v2.7.2
-    hooks:
-    -   id: pyupgrade
-        args: [--py36-plus]
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Automatically adds trailing commas to Python calls and literals.
+    - repo: https://github.com/asottile/add-trailing-comma
+      rev: v3.1.0
+      hooks:
+          - id: add-trailing-comma
 
--   repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.0.1
-    hooks:
-    -   id: add-trailing-comma
-        args: [--py36-plus]
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Mypy is a static type checker for Python.
+    # strict: We want all checks to be run run.
+    # ignore-missing-imports: In pre-commit, mypy runs in an isolated virtualenv and won't have access to all packages.
+    # types-attrs, types-click: Stub packages
+    - repo: https://github.com/pre-commit/mirrors-mypy
+      rev: v1.7.1
+      hooks:
+          - id: mypy
+            # args: [--strict, --ignore-missing-imports, --allow-subclassing-any]
+            additional_dependencies: [types-attrs]
+            # additional_dependencies: [types-attrs, types-pytz, types-requests, types-paramiko]
 
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.790
-    hooks:
-    -   id: mypy
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Separates Python imports in to sections (stdlib, third party, first party), puts `imports` before `from imports`,
+    # splits imports in to separate lines, and removes duplicates.
+    - repo: https://github.com/asottile/reorder_python_imports
+      rev: v3.12.0
+      hooks:
+          - id: reorder-python-imports
+            args: [--py37-plus]
 
--   repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: 2.1.4  # or specific git tag
-    hooks:
-        - id: shfmt
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Bandit is a tool designed to find common security issues in Python code.
+    # The tests directory is excluded as Bandit will raise error B101 (assert_used) for any function that uses assert, and
+    # acknowledges this may be used legitimately with Pyhon tests.
+    - repo: https://github.com/PyCQA/bandit
+      rev: "1.7.5"
+      hooks:
+          - id: bandit
+            exclude: ^tests/
 
-# end
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # Prettier is an opinionated code formatter. It enforces a consistent style by parsing your code and re-printing it
+    # with its own rules that take the maximum line length into account, wrapping code when necessary.
+    - repo: https://github.com/pre-commit/mirrors-prettier
+      rev: v3.1.0
+      hooks:
+          - id: prettier
+            # CHANGELOG.md is excluded because this file is maintained by semantic-release, which chooses to use asterisks
+            # over hyphens for bullets. Whilst it would be ideal for this project to have consistent standards, there is no
+            # option to change semantic-release to use hyphens, therefore this makes the workflow very clunky.
+            exclude: ^(CHANGELOG.md)
+            # This hook appears to be in conflict with the pretty-format-json hook. Prettier likes to keep lists on one line
+            # whereas pretty-format-json has a different opinion. For this reason, we let pretty-format-json handle JSON.
+            # pretty-format-json      prettier
+            # "editor.rulers": [      "editor.rulers": [120, 110, 100],
+            #    120,
+            #    110,
+            #    100
+            # ],
+            # pretty-format-json is preferred over prettier as it also takes care of ordering, but prettier does not.
+            exclude_types: [html, json]
+            stages: [commit]
+
+    # ------------------------------------------------------------------------------------------------------------------ #
+    # A Node.js style checker and lint tool for Markdown/CommonMark files.
+    - repo: https://github.com/igorshubovych/markdownlint-cli
+      rev: v0.37.0
+      hooks:
+          - id: markdownlint
+            args: ["--fix"]
+
+    # ------------------------------------------------------------------------------------------------------------------ #
