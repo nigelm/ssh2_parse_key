@@ -22,7 +22,7 @@ def test_openssh_public_key_load(shared_datadir: Path, data_format: str, encrypt
     pubkey = pubkeys[0]
     assert len(pubkeys) == 1
     assert pubkey.encryption == encryption
-    assert pubkey.type == "public"
+    assert pubkey.key_type == "public"
     assert pubkey.comment() == comment
     assert len(pubkey.key) > 65  # noqa: PLR2004
     #
@@ -38,7 +38,7 @@ def test_openssh_public_key_file(shared_datadir: Path, data_format: str, encrypt
     pubkey = pubkeys[0]
     assert len(pubkeys) == 1
     assert pubkey.encryption == encryption
-    assert pubkey.type == "public"
+    assert pubkey.key_type == "public"
     assert pubkey.comment() == comment
     assert len(pubkey.key) > 65  # noqa: PLR2004
 

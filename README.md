@@ -53,7 +53,7 @@ keys = Ssh2Key.parse(data)
 
 # now those keys can be dealt with...
 for public_key in keys:
-    print(f"This is a {key.type} key")
+    print(f"This is a {key.key_type} key")
     print(f"It uses {key.encryption} encryption")
     print(f"comment = {key.comment}")
     print(f"subject = {key.subject}")

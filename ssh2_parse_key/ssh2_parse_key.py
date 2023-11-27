@@ -70,7 +70,7 @@ class Ssh2Key:
     """
 
     key: str = attr.ib()
-    type: str = attr.ib(
+    key_type: str = attr.ib(
         default="public",
         validator=attr.validators.in_(SSH2_KEY_TYPES),
     )
@@ -176,7 +176,7 @@ class Ssh2Key:
         key = matches.group("key")
         encryption = matches.group("encryption")
         headers = OrderedDict([("Comment", matches.group("comment"))])
-        return cls(key=key, type="public", encryption=encryption, headers=headers)
+        return cls(key=key, key_type="public", encryption=encryption, headers=headers)
 
     @classmethod
     def _parse_openssh(cls: type[Self], keyblock: list[str], keytype: str, pubpriv: str) -> Self:  # noqa: ARG003
@@ -193,7 +193,7 @@ class Ssh2Key:
         headers, data, key = cls._initial_parse_keyblock(keyblock)
         current_position, encryption_bytes = cls._unpack_by_int(data, 0)
         encryption = encryption_bytes.decode()
-        return cls(key=key, type="public", encryption=encryption, headers=headers)
+        return cls(key=key, key_type="public", encryption=encryption, headers=headers)
 
     @classmethod
     def _initial_parse_keyblock(cls: type[Self], keyblock: "list[str]") -> tuple:
@@ -273,7 +273,7 @@ class Ssh2Key:
             string: Single secsh key as a string including newlines and with terminating newline.
         """
         lines: "list[str]" = []
-        if self.type == "public":
+        if self.key_type == "public":
             key_header_chunk = "SSH2 PUBLIC KEY"
         else:
             msg = "Unable to output secsh format private keys"
@@ -329,7 +329,7 @@ class Ssh2Key:
             string: Single openssh key as a string including newlines and with terminating newline.
         """
         lines: list[str] = []
-        if self.type == "public":
+        if self.key_type == "public":
             lines.append(f"{self.encryption} {self.key} {self.comment()}")
         else:
             # ## Initial code to deal with private keys not used
