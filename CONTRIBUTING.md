@@ -7,13 +7,13 @@ You can contribute in many ways:
 
 ## Report Bugs
 
-Report bugs at https://github.com/nigelm/ssh2_parse_key/issues.
+Report bugs at <https://github.com/nigelm/ssh2_parse_key/issues>.
 
 If you are reporting a bug, please include:
 
-- Your operating system name and version.
-- Any details about your local setup that might be helpful in troubleshooting.
-- Detailed steps to reproduce the bug.
+-   Your operating system name and version.
+-   Any details about your local setup that might be helpful in troubleshooting.
+-   Detailed steps to reproduce the bug.
 
 ## Fix Bugs
 
@@ -33,61 +33,58 @@ such.
 
 ## Submit Feedback
 
-The best way to send feedback is to file an issue at https://github.com/nigelm/ssh2_parse_key/issues.
+The best way to send feedback is to file an issue at
+<https://github.com/nigelm/ssh2_parse_key/issues>.
 
 If you are proposing a feature:
 
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+-   Explain in detail how it would work.
+-   Keep the scope as narrow as possible, to make it easier to implement.
+-   Remember that this is a volunteer-driven project, and that contributions are
+    welcome :)
 
-## Get Started!
+## Get Started
 
-Ready to contribute? Here's how to set up `ssh2_parse_key` for local development.
+Ready to contribute? Here's how to set up `ssh2_parse_key` for local
+development.
 
 1. Fork the `ssh2_parse_key` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/ssh2_parse_key.git
+    $ git clone <git@github.com>:your_name_here/ssh2_parse_key.git
 
-3. We use `poetry` for development, this is how you set up your fork for local development
+3. We use `poetry` for development, this is how you set up your fork for local
+   development
 
-    $ cd ssh2_parse_key/
-    $ poetry install
+    $ cd ssh2_parse_key/ $ poetry install
 
 4. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
-   Now you can make your changes locally.
+    Now you can make your changes locally.
 
-5. When you're done making changes, use pre-commit to do basic checks and ensure formatting
-   is consitant, and check that your changes pass the tests::
+5. When you're done making changes, use pre-commit to do basic checks and ensure
+   formatting is consitant, and check that your changes pass the tests::
 
-    $ pre-commit run
-    $ poetry run pytest
-    $ poetry run make docs    # generate local docs for checking
+    $ pre-commit run $ poetry run pytest $ poetry run make docs # generate local
+    docs for checking
 
-   pre-commit may need to be installed onto your system.
+    pre-commit may need to be installed onto your system.
 
 6. Commit your changes and push your branch to GitHub::
 
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+    $ git add . $ git commit -m "Your detailed description of your changes." $
+    git push origin name-of-your-bugfix-or-feature
 
 7. Submit a pull request through the GitHub website.
 
+## Deploying
 
-# Deploying
+A reminder for the maintainers on how to deploy. Make sure all your changes are
+committed (including an entry in HISTORY.rst). Then run::
 
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
-
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+$ bump2version patch # possible: major / minor / patch $ git push $ git push
+--tags
 
 Travis will then deploy to PyPI if tests pass.

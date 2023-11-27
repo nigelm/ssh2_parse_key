@@ -4,34 +4,35 @@
 [![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://nigelm.github.io/ssh2_parse_key/)
 [![pypi version](https://img.shields.io/pypi/v/ssh2_parse_key.svg)](https://pypi.python.org/pypi/ssh2_parse_key)
 
-Parses ssh2 public keys in either openssh or RFC4716/Secsh formats and
-converts to either format.
+Parses ssh2 public keys in either openssh or RFC4716/Secsh formats and converts
+to either format.
 
 At this point any attempt to work with private keys will raise an exception.
 
-----
+---
 
 ## Features
 
-- Reads public keys of the following encryption types:-
-    - `ssh-rsa`
-    - `ssh-dss`
-    - `ecdsa-sha2-nistp256`
-    - `ssh-ed25519`
-- Reads either Openssh or RFC4716 format public keys
-- Can read input sets with either or both formats in
-- Can output either format for any key
+-   Reads public keys of the following encryption types:-
+    -   `ssh-rsa`
+    -   `ssh-dss`
+    -   `ecdsa-sha2-nistp256`
+    -   `ssh-ed25519`
+-   Reads either Openssh or RFC4716 format public keys
+-   Can read input sets with either or both formats in
+-   Can output either format for any key
 
-----
+---
 
 ## Installation
 
 With `pip`:
+
 ```bash
 python3.6 -m pip install ssh2_parse_key
 ```
 
-----
+---
 
 ## Usage
 
@@ -64,12 +65,15 @@ for public_key in keys:
     print(key.openssh())
 ```
 
-----
+---
 
 ## Credits
 
-The package is strongly based on the perl [`Parse::SSH2::PublicKey`](https://metacpan.org/pod/Parse::SSH2::PublicKey) module.
+The package is strongly based on the perl
+[`Parse::SSH2::PublicKey`](https://metacpan.org/pod/Parse::SSH2::PublicKey)
+module.
 
-Development on the python version was done by [`Nigel Metheringham <nigelm@cpan.org>`](https://github.com/nigelm/)
+Development on the python version was done by
+[`Nigel Metheringham <nigelm@cpan.org>`](https://github.com/nigelm/)
 
-----
+---

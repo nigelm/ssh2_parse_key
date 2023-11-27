@@ -1,13 +1,13 @@
 """Main module for `ssh2_parse_key` - provides `Ssh2Key()`"""
 import base64
+import os
 import re
 import struct
 import textwrap
-import typing
 from collections import OrderedDict
-from os import PathLike
-from typing import List
-from typing import Match
+from pathlib import Path
+from re import Match
+from typing import Self
 
 import attr
 
@@ -56,8 +56,7 @@ INT_LEN = 4
 
 @attr.s(slots=True, frozen=True, kw_only=True)
 class Ssh2Key:
-    """
-    Encapsulates an ssh public key
+    """Encapsulates an ssh public key
 
     An `Ssh2Key` object is immutable after creation.  Typically you would create
     `Ssh2Key` objects by using `parse()` or `parse_file()` class methods.
@@ -85,9 +84,8 @@ class Ssh2Key:
     )  # type: OrderedDict[str, str]
 
     @classmethod
-    def parse(cls, data: str) -> "List[Ssh2Key]":
-        """
-        Creates a set of `Ssh2Key` objects from a string of ssh key data
+    def parse(cls: type[Self], data: str) -> list[Self]:  # noqa: PLR0912
+        """Creates a set of `Ssh2Key` objects from a string of ssh key data
 
         Accepts a block of text containing SSH2 public keys (in either OpenSSH or
         SECSH format) and parses out SSH2 public keys returning them as `Ssh2Key`
@@ -105,32 +103,32 @@ class Ssh2Key:
 
         """
         lines = data.splitlines()  # break the input into lines
-        keys: "List[Ssh2Key]" = []
+        keys: list[Self] = []
         inside_keyblock = False  # where we are
-        keyblock: "List[str]" = []
+        keyblock: list[str] = []
         keytype = ""
         pubpriv = ""
 
         for line in lines:
             matches = KEY_BOUNDARY_PATTERN.match(line)
-            if inside_keyblock and matches and matches.group("beginend") == "END":
-                inside_keyblock = False  # no longer within a keyblock
-                if keytype == matches.group("keytype") and pubpriv == matches.group(
-                    "pubpriv",
-                ):
-                    if keytype in ["OPENSSH", "DSA", "EC", "RSA"]:
-                        key = cls._parse_openssh(keyblock, keytype, pubpriv)
-                    elif keytype == "SSH2":
-                        key = cls._parse_secsh(keyblock, pubpriv)
-                    else:
-                        raise ValueError(
-                            f"Unrecognised type of ssh key {keytype}",
-                        )
-                    if key:
-                        keys.append(key)
-                keyblock = []  # fresh keyblock for next key
-            elif inside_keyblock:
-                keyblock.append(line)
+            if inside_keyblock:
+                if matches and matches.group("beginend") == "END":
+                    inside_keyblock = False  # no longer within a keyblock
+                    if keytype == matches.group("keytype") and pubpriv == matches.group(
+                        "pubpriv",
+                    ):
+                        if keytype in ["OPENSSH", "DSA", "EC", "RSA"]:
+                            keys.append(cls._parse_openssh(keyblock, keytype, pubpriv))
+                        elif keytype == "SSH2":
+                            keys.append(cls._parse_secsh(keyblock, pubpriv))
+                        else:
+                            msg = f"Unrecognised type of ssh key {keytype}"
+                            raise ValueError(
+                                msg,
+                            )
+                    keyblock = []  # fresh keyblock for next key
+                else:
+                    keyblock.append(line)
             elif matches and matches.group("beginend") == "BEGIN":
                 keytype = matches.group("keytype")
                 pubpriv = matches.group("pubpriv")
@@ -140,21 +138,20 @@ class Ssh2Key:
                 matches = OPENSSH_PUBKEY_PATTERN.match(line)
                 if matches:
                     keys.append(cls._parse_openssh_oneline(matches))
-
                 else:
                     # raise ValueError("Unrecognised type of ssh key")
                     pass  # ignore for now
 
         if len(keys) == 0:
-            raise ValueError("No valid ssh keys found")
+            msg = "No valid ssh keys found"
+            raise ValueError(msg)
 
         # return the assemblage of keys
         return keys
 
     @classmethod
-    def parse_file(cls, filepath: "PathLike[str]") -> "List[Ssh2Key]":
-        """
-        Creates a set of `Ssh2Key` objects from a file of ssh key data
+    def parse_file(cls: type[Self], filepath: str | os.PathLike[str]) -> list[Self]:
+        """Creates a set of `Ssh2Key` objects from a file of ssh key data
 
         Accepts a block of text containing SSH2 public keys (in either OpenSSH or
         SECSH format) and parses out SSH2 public keys returning them as `Ssh2Key`
@@ -171,12 +168,10 @@ class Ssh2Key:
         Returns:
             keys: A list of  `Ssh2Key` objects
         """
-        with open(filepath) as f:
-            data = f.read()
-            return cls.parse(data)
+        return cls.parse(Path(filepath).read_text())
 
     @classmethod
-    def _parse_openssh_oneline(cls, matches: Match):
+    def _parse_openssh_oneline(cls: type[Self], matches: Match) -> Self:
         """Build a openssh public key from regex match components."""
         key = matches.group("key")
         encryption = matches.group("encryption")
@@ -184,22 +179,24 @@ class Ssh2Key:
         return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod
-    def _parse_openssh(cls, keyblock: "List[str]", keytype: str, pubpriv: str) -> None:
+    def _parse_openssh(cls: type[Self], keyblock: list[str], keytype: str, pubpriv: str) -> Self:  # noqa: ARG003
         """Decode an openssh keyblock into a key object."""
-        raise ValueError("Cannot currently decode openssh format keyblocks")
+        msg = "Cannot currently decode openssh format keyblocks"
+        raise ValueError(msg)
 
     @classmethod
-    def _parse_secsh(cls, keyblock: "List[str]", pubpriv: str) -> "Ssh2Key":
+    def _parse_secsh(cls: type[Self], keyblock: list[str], pubpriv: str) -> Self:
         """Decode an secsh/RFC4716 keyblock into a key object."""
         if pubpriv != "PUBLIC":
-            raise ValueError("Can only decode secsh public keys")
+            msg = "Can only decode secsh public keys"
+            raise ValueError(msg)
         headers, data, key = cls._initial_parse_keyblock(keyblock)
-        current_position, encryption = cls._unpack_by_int(data, 0)
-        encryption = encryption.decode()
+        current_position, encryption_bytes = cls._unpack_by_int(data, 0)
+        encryption = encryption_bytes.decode()
         return cls(key=key, type="public", encryption=encryption, headers=headers)
 
     @classmethod
-    def _initial_parse_keyblock(cls, keyblock: "List[str]") -> tuple:
+    def _initial_parse_keyblock(cls: type[Self], keyblock: "list[str]") -> tuple:
         headers = OrderedDict([("Comment", "")])  # default empty comment
         in_header = False
         header = ""
@@ -235,43 +232,39 @@ class Ssh2Key:
         return (headers, data, key)
 
     @classmethod
-    def _unpack_by_int(cls, data: bytes, current_position: int):
+    def _unpack_by_int(cls: type[Self], data: bytes, current_position: int) -> tuple[int, bytes]:
         """Returns a tuple with (location of next data field, contents of requested data field)."""
         # Unpack length of data field
         try:
             requested_data_length = struct.unpack(
                 ">I",
-                data[current_position : current_position + INT_LEN],  # noqa: E203
+                data[current_position : current_position + INT_LEN],
             )[0]
-        except struct.error:
-            raise ValueError("Unable to unpack %s bytes from the data" % INT_LEN)
+        except struct.error as err:
+            raise ValueError("Unable to unpack %s bytes from the data" % INT_LEN) from err
 
         # Move pointer to the beginning of the data field
         current_position += INT_LEN
         remaining_data_length = len(data[current_position:])
 
         if remaining_data_length < requested_data_length:
+            msg = f"Requested {requested_data_length} bytes, but only {remaining_data_length} bytes available."
             raise ValueError(
-                "Requested %s bytes, but only %s bytes available."
-                % (requested_data_length, remaining_data_length),
+                msg,
             )
 
-        next_data = data[
-            current_position : current_position + requested_data_length  # noqa: E203
-        ]
+        next_data = data[current_position : current_position + requested_data_length]
         # Move pointer to the end of the data field
         current_position += requested_data_length
         return current_position, next_data
 
-    def secsh(self) -> str:
-        """
-        Returns an SSH public key in SECSH format (as specified in RFC4716).
+    def secsh(self: Self) -> str:
+        """Returns an SSH public key in SECSH format (as specified in RFC4716).
+
         Preserves headers and the order of headers.  Returned as a single
         string including newlines and with terminating newline.
 
         See http://tools.ietf.org/html/rfc4716
-
-        Arguments:
 
         Raises:
             ValueError: Unable to output secsh format private keys
@@ -279,11 +272,12 @@ class Ssh2Key:
         Returns:
             string: Single secsh key as a string including newlines and with terminating newline.
         """
-        lines: "List[str]" = []
+        lines: "list[str]" = []
         if self.type == "public":
             key_header_chunk = "SSH2 PUBLIC KEY"
         else:
-            raise ValueError("Unable to output secsh format private keys")
+            msg = "Unable to output secsh format private keys"
+            raise ValueError(msg)
             key_header_chunk = "SSH2 ENCRYPTED PRIVATE KEY"
 
         # add the wrapping header
@@ -304,17 +298,15 @@ class Ssh2Key:
         # return the assembled string
         return "\n".join(lines)
 
-    def rfc4716(self) -> str:
-        """
-        Returns an SSH public key in SECSH format (as specified in RFC4716).
+    def rfc4716(self: Self) -> str:
+        """Returns an SSH public key in SECSH format (as specified in RFC4716).
+
         Preserves headers and the order of headers.  Returned as a single
         string including newlines and with terminating newline.
 
         Alias - ``rfc4716()`` just calls ``secsh()``
 
         See http://tools.ietf.org/html/rfc4716
-
-        Arguments:
 
         Raises:
             ValueError: Unable to output secsh format private keys
@@ -324,13 +316,11 @@ class Ssh2Key:
         """
         return self.secsh()
 
-    def openssh(self) -> str:
-        """
-        Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
+    def openssh(self: Self) -> str:
+        """Returns an SSH public/private key in OpenSSH format. Preserves 'comment'
+
         field parsed from either SECSH or OpenSSH.  Returned as a single
         string including newlines and with terminating newline.
-
-        Arguments:
 
         Raises:
             ValueError: Unable to output openssh format private keys
@@ -338,9 +328,9 @@ class Ssh2Key:
         Returns:
             string: Single openssh key as a string including newlines and with terminating newline.
         """
-        lines: "List[str]" = []
+        lines: list[str] = []
         if self.type == "public":
-            lines.append(" ".join([self.encryption, self.key, self.comment()]))
+            lines.append(f"{self.encryption} {self.key} {self.comment()}")
         else:
             # ## Initial code to deal with private keys not used
             # # private key - obviously!
@@ -357,31 +347,25 @@ class Ssh2Key:
             #
             # # add the wrapping footer
             # lines.append(f"---- END {self.encryption} PRIVATE KEY ----")
-            raise ValueError("Unable to output openssh format private keys")
+            msg = "Unable to output openssh format private keys"
+            raise ValueError(msg)
         lines.append("")  # force terminating newline
 
         # return the assembled string
         return "\n".join(lines)
 
-    def comment(self) -> str:
-        """
-        Returns the comment header from a ssh key object.
-
-        Arguments:
+    def comment(self: Self) -> str:
+        """Returns the comment header from a ssh key object.
 
         Returns:
             string: Comment field or an empty string.
         """
         if "Comment" in self.headers:
             return self.headers["Comment"]
-        else:
-            return ""
+        return ""
 
-    def subject(self) -> "typing.Union[str, None]":
-        """
-        Returns the subject header from a ssh key object.
-
-        Arguments:
+    def subject(self: Self) -> str | None:
+        """Returns the subject header from a ssh key object.
 
         Returns:
             string: Subject field or `None`.
@@ -391,8 +375,8 @@ class Ssh2Key:
         return None
 
     def _encode_header(
-        self,
-        data: "List[str]",
+        self: Self,
+        data: "list[str]",
         header: str,
         value: str,
         limit: int,

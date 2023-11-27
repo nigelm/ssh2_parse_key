@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-"""
-Tests for `ssh2_parse_key` package - convert keys.
+"""Tests for `ssh2_parse_key` package - convert keys.
 
 Loads keys in one format, converts to the other, and
 check if they are the same as the test data (which was
 generated using the openssh tools).
 """
+from pathlib import Path
+
 import pytest
 
 from ssh2_parse_key import Ssh2Key
@@ -18,12 +18,13 @@ convert_pubkey_tests = [
 ]
 
 
-@pytest.mark.parametrize("format,encryption", convert_pubkey_tests)
-def test_convert_openssh_to_rfc4716(shared_datadir, format, encryption):
-    openssh_filename = f"test_key_{format}.pub"
+@pytest.mark.parametrize(("data_format", "encryption"), convert_pubkey_tests)
+def test_convert_openssh_to_rfc4716(shared_datadir: Path, data_format: str, encryption: str) -> None:  # noqa: ARG001
+    """Test the conversion from openssh -> rfc4716."""
+    openssh_filename = f"test_key_{data_format}.pub"
     openssh_contents = (shared_datadir / openssh_filename).read_text()
     openssh_pubkey = Ssh2Key.parse(openssh_contents)[0]
-    rfc4716_filename = f"test_key_{format}_rfc4716.pub"
+    rfc4716_filename = f"test_key_{data_format}_rfc4716.pub"
     rfc4716_contents = (shared_datadir / rfc4716_filename).read_text()
     rfc4716_pubkey = Ssh2Key.parse(rfc4716_contents)[0]
     # force the comments to be the same
@@ -33,12 +34,13 @@ def test_convert_openssh_to_rfc4716(shared_datadir, format, encryption):
     assert rfc4716_pubkey.openssh() == openssh_contents
 
 
-@pytest.mark.parametrize("format,encryption", convert_pubkey_tests)
-def test_convert_rfc4716_to_openssh(shared_datadir, format, encryption):
-    openssh_filename = f"test_key_{format}.pub"
+@pytest.mark.parametrize(("data_format", "encryption"), convert_pubkey_tests)
+def test_convert_rfc4716_to_openssh(shared_datadir: Path, data_format: str, encryption: str) -> None:  # noqa: ARG001
+    """Test the conversion from rfc4716 ->openssh."""
+    openssh_filename = f"test_key_{data_format}.pub"
     openssh_contents = (shared_datadir / openssh_filename).read_text()
     openssh_pubkey = Ssh2Key.parse(openssh_contents)[0]
-    rfc4716_filename = f"test_key_{format}_rfc4716.pub"
+    rfc4716_filename = f"test_key_{data_format}_rfc4716.pub"
     rfc4716_contents = (shared_datadir / rfc4716_filename).read_text()
     rfc4716_pubkey = Ssh2Key.parse(rfc4716_contents)[0]
     # force the comments to be the same

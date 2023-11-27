@@ -73,7 +73,7 @@ repos:
       hooks:
           - id: ruff-format
           - id: ruff
-            args: [--fix, --exit-non-zero-on-fix]
+            args: [--fix, --exit-non-zero-on-fix, --unsafe-fixes]
             exclude: utils/create_ripe_classes.py # This is not part of the release and will be tidied later
 
     # ------------------------------------------------------------------------------------------------------------------ #
@@ -153,13 +153,5 @@ repos:
             # pretty-format-json is preferred over prettier as it also takes care of ordering, but prettier does not.
             exclude_types: [html, json]
             stages: [commit]
-
-    # ------------------------------------------------------------------------------------------------------------------ #
-    # A Node.js style checker and lint tool for Markdown/CommonMark files.
-    - repo: https://github.com/igorshubovych/markdownlint-cli
-      rev: v0.37.0
-      hooks:
-          - id: markdownlint
-            args: ["--fix"]
 
     # ------------------------------------------------------------------------------------------------------------------ #
