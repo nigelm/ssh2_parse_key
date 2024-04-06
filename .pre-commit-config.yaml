@@ -3,7 +3,7 @@
 repos:
     # ------------------------------------------------------------------------------------------------------------------ #
     - repo: https://github.com/python-poetry/poetry
-      rev: "1.7.0" # add version here
+      rev: "1.8.0" # add version here
       hooks:
           - id: poetry-check
           # - id: poetry-lock
@@ -69,7 +69,7 @@ repos:
     # yesqa, eradicate, pyupgrade, and autoflake. Autofix has been enabled, as this will fix some reported issues.
     # The formatter is also used in place of black
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.1.6
+      rev: v0.3.5
       hooks:
           - id: ruff-format
           - id: ruff
@@ -80,14 +80,14 @@ repos:
     # This hook will validate a pre-commit hooks manifest file. Unlikely to be relevant to any project that this template
     # is used by, however it doesn't place any extra load as only runs on .pre-commit-hooks.yaml files.
     - repo: https://github.com/pre-commit/pre-commit
-      rev: v3.5.0
+      rev: v3.7.0
       hooks:
           - id: validate_manifest
 
     # ------------------------------------------------------------------------------------------------------------------ #
     # Automatically upgrades syntax for newer versions of Python.
     - repo: https://github.com/asottile/pyupgrade
-      rev: v3.15.0
+      rev: v3.15.2
       hooks:
           - id: pyupgrade
             args: [--py311-plus]
@@ -105,28 +105,28 @@ repos:
     # ignore-missing-imports: In pre-commit, mypy runs in an isolated virtualenv and won't have access to all packages.
     # types-attrs, types-click: Stub packages
     - repo: https://github.com/pre-commit/mirrors-mypy
-      rev: v1.7.1
+      rev: v1.9.0
       hooks:
           - id: mypy
             # args: [--strict, --ignore-missing-imports, --allow-subclassing-any]
             additional_dependencies: [types-attrs]
             # additional_dependencies: [types-attrs, types-pytz, types-requests, types-paramiko]
 
-    # ------------------------------------------------------------------------------------------------------------------ #
-    # Separates Python imports in to sections (stdlib, third party, first party), puts `imports` before `from imports`,
-    # splits imports in to separate lines, and removes duplicates.
-    - repo: https://github.com/asottile/reorder_python_imports
-      rev: v3.12.0
-      hooks:
-          - id: reorder-python-imports
-            args: [--py37-plus]
+    # # ------------------------------------------------------------------------------------------------------------------ #
+    # # Separates Python imports in to sections (stdlib, third party, first party), puts `imports` before `from imports`,
+    # # splits imports in to separate lines, and removes duplicates.
+    # - repo: https://github.com/asottile/reorder_python_imports
+    #   rev: v3.12.0
+    #   hooks:
+    #       - id: reorder-python-imports
+    #         args: [--py37-plus]
 
     # ------------------------------------------------------------------------------------------------------------------ #
     # Bandit is a tool designed to find common security issues in Python code.
     # The tests directory is excluded as Bandit will raise error B101 (assert_used) for any function that uses assert, and
     # acknowledges this may be used legitimately with Pyhon tests.
     - repo: https://github.com/PyCQA/bandit
-      rev: "1.7.5"
+      rev: "1.7.8"
       hooks:
           - id: bandit
             exclude: ^tests/
@@ -135,7 +135,7 @@ repos:
     # Prettier is an opinionated code formatter. It enforces a consistent style by parsing your code and re-printing it
     # with its own rules that take the maximum line length into account, wrapping code when necessary.
     - repo: https://github.com/pre-commit/mirrors-prettier
-      rev: v3.1.0
+      rev: v4.0.0-alpha.8
       hooks:
           - id: prettier
             # CHANGELOG.md is excluded because this file is maintained by semantic-release, which chooses to use asterisks
