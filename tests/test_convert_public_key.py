@@ -4,6 +4,7 @@ Loads keys in one format, converts to the other, and
 check if they are the same as the test data (which was
 generated using the openssh tools).
 """
+
 from pathlib import Path
 
 import pytest

@@ -3,6 +3,7 @@
 Uses a test from the multiple keys tests but puts # comment
 lines in between the keys to see if that breaks things.
 """
+
 import pytest
 
 from ssh2_parse_key import Ssh2Key

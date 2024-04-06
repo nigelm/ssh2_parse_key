@@ -1,4 +1,5 @@
 """Main module for `ssh2_parse_key` - provides `Ssh2Key()`"""
+
 import base64
 import os
 import re

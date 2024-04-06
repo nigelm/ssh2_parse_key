@@ -1,4 +1,5 @@
 """Tests for `ssh2_parse_key` package - loading multiple short keys."""
+
 import pytest  # noqa: F401
 
 from ssh2_parse_key import Ssh2Key

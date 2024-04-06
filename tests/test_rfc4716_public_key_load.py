@@ -1,4 +1,5 @@
 """Tests for `ssh2_parse_key` package - loading RFC4716 keys."""
+
 from pathlib import Path
 
 import pytest

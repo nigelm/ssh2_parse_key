@@ -1,4 +1,5 @@
 """Tests for `ssh2_parse_key` package - load sets of keys."""
+
 from pathlib import Path
 
 import pytest  # noqa: F401

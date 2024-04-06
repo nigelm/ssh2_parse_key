@@ -4,6 +4,7 @@ This modifies the loaded file content to have \r\n line ends
 rather than the normal \n line ends.  We want to see if this
 breaks things...  It shouldn't!
 """
+
 from pathlib import Path
 
 import pytest
